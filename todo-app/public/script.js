@@ -12,7 +12,7 @@ function fetchTodos() {
             const li = document.createElement("li");
             li.innerHTML = `
                 ${todo.task}
-                <button onclick="deleteTodo(${todo.id})"></button>
+                <button id="deleteTodo" onclick="deleteTodo(${todo.id})">delete</button>
             `;
             list.appendChild(li);
         });
