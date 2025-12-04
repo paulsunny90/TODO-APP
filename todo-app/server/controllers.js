@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { json } = require("stream/consumers");
 
 const filePath = path.join(__dirname, "storage.json");
 
@@ -63,45 +62,41 @@ function deleteTodo(req, res, id) {
     res.end("Deleted");
 }
 
-function puttodo(req,res,id){
+function updateTodo(req, res, id) {
 
-    let body=""
+    let body = "";
 
-    req.on("data",chunk=>{
-        body+= chunk.toString();
-
+    req.on("data", chunk => {
+        body += chunk.toString();
     });
 
-    req.on(end,()=>{
-        const data=JSON.parse(body)
-        
-         let todos = readTodos();
+    req.on("end", () => {
 
-        todo =todo.map(todo=> todo.id =id?{...todo,completed:data.completed }:todo);
+        const data = JSON.parse(body);
+
+        let todos = readTodos();
+
+        todos = todos.map(todo => {
+            if (todo.id == id) {
+                todo.status = data.status;
+            }
+            return todo;
+        });
+
         saveTodos(todos);
 
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "updated" }));
+        res.writeHead(200);
+        res.end("Updated");
     });
-    
-
-
-};
+}
 
 
 module.exports = {
     getTodos,
     addTodo,
     deleteTodo,
-    puttodo
+    updateTodo
 };
-
-
-
-
-
-
-
 
 
 
