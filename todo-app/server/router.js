@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { getTodos, addTodo, deleteTodo } = require("./controllers");
+const { getTodos, addTodo, deleteTodo,puttodo } = require("./controllers");
 
 module.exports = (req, res) => {
 
@@ -36,7 +36,12 @@ module.exports = (req, res) => {
         const id = req.url.split("/")[3];
         deleteTodo(req, res, id);
     }
+    else if (req.method==="PUT"&&req.url.startsWith("/api/todos/")){
+        const id= req.url.split("/")[3]
+       puttodo(req.url,id)
 
+
+    }
     else {
         res.writeHead(404);
         res.end("404 Not Found");

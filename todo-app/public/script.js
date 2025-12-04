@@ -4,19 +4,23 @@ fetchTodos();
 
 function fetchTodos() {
     fetch("/api/todos")
-    .then(res => res.json())
-    .then(data => {
-        list.innerHTML = "";
+        .then(res => res.json())
+        .then(data => {
+            list.innerHTML = "";
 
-        data.forEach(todo => {
-            const li = document.createElement("li");
-            li.innerHTML = `
+            data.forEach(todo => {
+                const li = document.createElement("li");
+                li.innerHTML = `
                 ${todo.task}
-                <button id="deleteTodo" onclick="deleteTodo(${todo.id})">delete</button>
+                 <input type="checkbox" ${todo.completed ? "checked" : ""} 
+                  onchange="toggleComplete(${todo.id}, this.checked)">
+                  <span class="${todo.completed ? 'done' : ''}">${todo.task}</span>
+
+                  <button class="deleteBtn" onclick="deleteTodo(${todo.id})">Delete</button>
             `;
-            list.appendChild(li);
+                list.appendChild(li);
+            });
         });
-    });
 }
 
 function addTodo() {
@@ -28,15 +32,23 @@ function addTodo() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ task })
     })
-    .then(() => {
-        input.value = "";
-        fetchTodos();
-    });
+        .then(() => {
+            input.value = "";
+            fetchTodos();
+        });
 }
 
 function deleteTodo(id) {
     fetch("/api/todos/" + id, {
         method: "DELETE"
     })
-    .then(() => fetchTodos());
+        .then(() => fetchTodos());
+}
+
+function toggleComplete(id, completed) {
+    fetch("/api/todos/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed })
+    }).then(() => fetchTodos());
 }
