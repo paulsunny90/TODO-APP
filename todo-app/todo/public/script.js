@@ -77,11 +77,3 @@ function updateTodo(id, isCompleted) {
     })
         .then(() => fetchTodos());
 }
- 
-let z = 50;
-function run() {
-  let z = 100;
-  console.log(z);
-}
-run();
-console.log(z)

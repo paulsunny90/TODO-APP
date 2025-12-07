@@ -1,8 +1,6 @@
+const db= require("./db.js")
 const http = require("http");
-const path = require("path");
-const fs = require("fs");
 const router = require("./router");
-
 const server = http.createServer((req, res) => {
     router(req, res);
 });
