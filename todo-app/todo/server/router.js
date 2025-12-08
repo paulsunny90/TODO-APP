@@ -11,7 +11,6 @@ const render = (res, file, type) => {
 };
 
 module.exports = (req, res) => {
-
     if (req.method === "GET" && req.url === "/")
         return render(res, path.join(__dirname, "../public/index.html"), "text/html");
 
@@ -36,6 +35,7 @@ module.exports = (req, res) => {
         const id = req.url.split("/")[3];
         return updateTodo(req, res, id);
     }
+
     res.writeHead(404);
     res.end("404 Not Found");
 };

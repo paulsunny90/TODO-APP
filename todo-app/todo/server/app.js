@@ -1,6 +1,10 @@
-const db= require("./db.js")
 const http = require("http");
 const router = require("./router");
+const connectDB = require("./db");
+
+// Connect to MongoDB
+connectDB();
+
 const server = http.createServer((req, res) => {
     router(req, res);
 });
