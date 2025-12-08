@@ -1,14 +1,18 @@
 const http = require("http");
 const router = require("./router");
-const connectDB = require("./db");
+const db = require("./db");
 
-// Connect to MongoDB
-connectDB();
 
-const server = http.createServer((req, res) => {
-    router(req, res);
-});
+db.connect()
+  .then(() => {
+    const server = http.createServer((req, res) => {
+      router(req, res);
+    });
 
-server.listen(3000, () => {
-    console.log("Server running at http://localhost:3000");
-});
+    server.listen(3000, () => {
+      console.log("Server running at http://localhost:3000");
+    });
+  })
+  .catch(err => {
+    console.error("DB connection failed:", err);
+  });
